@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Validation</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+<div id="wrapper">
+    <form id="registerForm">
+        <fieldset id="userInfo">
+            <legend>User Information:</legend>
+            <div class="pairContainer">
+                <label for="username">Username:</label>
+                <input id="username" type="text">
+            </div>
+            <div class="pairContainer">
+                <label for="email">Email:</label>
+                <input id="email" type="text">
+            </div>
+            <div class="pairContainer">
+                <label for="password">Password:</label>
+                <input id="password" type="password">
+            </div>
+            <div class="pairContainer">
+                <label for="confirm-password">Confirm Password:</label>
+                <input id="confirm-password" type="password">
+            </div>
+            <div class="pairContainer">
+                <label for="company">Is Company?</label>
+                <input id="company" type="checkbox" >
+            </div>
+        </fieldset>
+        <fieldset id="companyInfo" style="display: none;">
+            <legend>Company Informaion:</legend>
+            <div class="pairContainer">
+                <label for="companyNumber">Company Number</label>
+                <input id="companyNumber" type="number">
+            </div>
+        </fieldset>
+        <button id="submit">Submit</button>
+    </form>
+    <div id="valid" style="display: none;">Valid</div>
+</div>
+<script src="form-validation.js"></script>
+<script>
+    window.onload = function () {
+        validate();
+        function validate() {
+            let companyCheck=$('#company');
+            let companyNum=$('#companyNumber');
+            let userName=$('#username');
+            let email=$('#email');
+            let pass=$('#password');
+            let confirmPass=$('#confirm-password');
+            let checkUserName=/^[a-zA-Z0-9]{3,20}$/;
+            let checkEmail=/^.+@.+\..+$/;
+            let checkPass=/^.{5,15}$/;
+            let checkCompNum=/^[0-9]{1000,9999}$/;
+            //zakacame Event na button
+            let submitBtn=$('#submit').on('click',function (e) {
+                //predotvratjava default action pri on-load
+                e.preventDefault();
+                if(!checkUserName.test(userName.val())){
+                    userName.css('border','2px solid red');
+                }
+                if(!checkEmail.test(email.val())){
+                    email.css('border', '2px solid red');
+                }
+                if(!checkPass.test(pass.val())){
+                    pass.css('border','2px solid red');
+                }
+                if(! checkPass.test(confirmPass.val())&& pass.val()!==confirmPass.val()){
+                    confirmPass.css('border','2px solid red');
+                }
+                if(!checkCompNum.test(companyNum.val())) {
+                    companyNum.css('border', '2px solid red');
+                }
+            });
+            companyCheck.change(function () {
+                if(companyCheck.is(':checked')){
+                    $('#companyInfo').css('display','block');
+                }else {
+                    $('#companyInfo').css('display','');
+                }
+
+            });
+        }
+    }
+</script>
+</body>
+</html>
